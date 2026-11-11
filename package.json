@@ -1,0 +1,27 @@
+{
+  "name": "agrismart-ai",
+  "version": "1.0.0",
+  "description": "AgriSmart AI - Intelligent Crop Advisory Assistant",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "start": "npm run start --workspace=server",
+    "server": "npm run dev --workspace=server",
+    "client": "npm run dev --workspace=client",
+    "build": "npm run build --workspace=client",
+    "test": "node --test tests/unit/validators.test.js tests/integration/api.test.js"
+  },
+  "keywords": [
+    "agriculture",
+    "agritech",
+    "gemini",
+    "ai",
+    "crop-advisory",
+    "supabase"
+  ],
+  "author": "AgriSmart Engineering Team",
+  "license": "ISC"
+}
