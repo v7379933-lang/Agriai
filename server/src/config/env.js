@@ -12,6 +12,7 @@ const envSchema = z.object({
   SUPABASE_URL: z.string().url('SUPABASE_URL must be a valid URL').default('https://mock-supabase.supabase.co'),
   SUPABASE_ANON_KEY: z.string().default('mock-anon-key'),
   SUPABASE_SERVICE_ROLE_KEY: z.string().default('mock-service-role-key'),
+  DATABASE_URL: z.string().optional().default(''),
   
   // Gemini AI
   GEMINI_API_KEY: z.string().default('AIzaSyMockKeyForDevelopment'),
@@ -37,8 +38,6 @@ const parsed = envSchema.safeParse(process.env);
 if (!parsed.success) {
   console.error('❌ Invalid environment variable configuration:');
   console.error(JSON.stringify(parsed.error.format(), null, 2));
-  // In development, we warn and proceed with defaults so setup is friction-free
 }
 
 export const env = parsed.success ? parsed.data : envSchema.parse({});
-

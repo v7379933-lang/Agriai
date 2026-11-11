@@ -2,22 +2,26 @@ import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import app from '../../server/src/app.js';
 
-let server;
-let baseUrl;
-
-before((done) => {
-  server = app.listen(0, () => {
-    const port = server.address().port;
-    baseUrl = `http://localhost:${port}`;
-    done();
-  });
-});
-
-after((done) => {
-  server.close(done);
-});
-
 describe('API Integration Test Suite', () => {
+  let server;
+  let baseUrl;
+
+  before(async () => {
+    await new Promise((resolve) => {
+      server = app.listen(0, '127.0.0.1', () => {
+        const port = server.address().port;
+        baseUrl = `http://127.0.0.1:${port}`;
+        resolve();
+      });
+    });
+  });
+
+  after(async () => {
+    if (server) {
+      await new Promise((resolve) => server.close(resolve));
+    }
+  });
+
   it('GET /health - should return HEALTHY status', async () => {
     const res = await fetch(`${baseUrl}/health`);
     assert.equal(res.status, 200);
@@ -187,4 +191,3 @@ describe('API Integration Test Suite', () => {
     assert.ok(body.data.totalRegisteredFarmers > 0);
   });
 });
-

@@ -4,6 +4,29 @@ export const requireAuth = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
+    // Support demo/testing tokens regardless of Supabase configuration state
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.split(' ')[1];
+      if (token === 'demo-admin-token') {
+        req.user = {
+          id: 'a0000000-0000-0000-0000-000000000000',
+          email: 'admin@agrismart.ai',
+          role: 'admin',
+          fullName: 'System Administrator'
+        };
+        return next();
+      }
+      if (token === 'demo-farmer-token') {
+        req.user = {
+          id: 'f1111111-1111-1111-1111-111111111111',
+          email: 'ramesh.farmer@agrismart.ai',
+          role: 'farmer',
+          fullName: 'Ramesh Reddy'
+        };
+        return next();
+      }
+    }
+
     // Development mode fallback when Supabase keys are not yet configured
     if (!isSupabaseConfigured()) {
       req.user = {
@@ -24,27 +47,6 @@ export const requireAuth = async (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-
-    // Development demo token support
-    if (token === 'demo-farmer-token') {
-      req.user = {
-        id: 'f1111111-1111-1111-1111-111111111111',
-        email: 'ramesh.farmer@agrismart.ai',
-        role: 'farmer',
-        fullName: 'Ramesh Reddy'
-      };
-      return next();
-    }
-
-    if (token === 'demo-admin-token') {
-      req.user = {
-        id: 'a0000000-0000-0000-0000-000000000000',
-        email: 'admin@agrismart.ai',
-        role: 'admin',
-        fullName: 'System Administrator'
-      };
-      return next();
-    }
 
     const { data: { user }, error } = await supabaseAdmin.auth.getUser(token);
 

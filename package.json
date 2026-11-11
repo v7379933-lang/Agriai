@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "AgriSmart AI - Intelligent Crop Advisory Assistant",
   "private": true,
+  "type": "module",
   "workspaces": [
     "server",
     "client"
@@ -12,6 +13,7 @@
     "server": "npm run dev --workspace=server",
     "client": "npm run dev --workspace=client",
     "build": "npm run build --workspace=client",
+    "migrate": "node server/scripts/migrate.js",
     "test": "node --test tests/unit/validators.test.js tests/integration/api.test.js"
   },
   "keywords": [
