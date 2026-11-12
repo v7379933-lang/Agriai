@@ -17,6 +17,7 @@ import weatherRoutes from './routes/weather.routes.js';
 import chatRoutes from './routes/chat.routes.js';
 import guideRoutes from './routes/guide.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import authRoutes from './routes/auth.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -76,6 +77,7 @@ app.get('/health', (req, res) => {
 });
 
 // Mount API v1 Routes
+app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1', cropRoutes);
 app.use('/api/v1', advisoryRoutes);
